@@ -13,35 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the repository
-    - name: Checkout code
-      uses: actions/checkout@v2
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Set up Node.js environment
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'  # Use the Node.js version your app requires
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'  # Use the Node.js version your app requires
 
-    # Install dependencies
-    - name: Install dependencies
-      run: npm install
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
 
-    # Run tests (if applicable)
-    - name: Run tests
-      run: npm test  # Make sure you have tests set up in your app
+      # Run tests (if applicable)
+      - name: Run tests
+        run: npm test  # Make sure you have tests set up in your app
 
-    # Build Docker image (if you're using Docker)
-
-    - name: Build Docker image
-      run: |
+      # Build Docker image with MONGO_URI and JWT_SECRET as build arguments
+      - name: Build Docker image
+        run: |
           docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t my-node-app .
 
-    # Optionally, push to Docker Hub or other registry
-    - name: Push Docker image to Docker Hub
-      run: |
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-        docker push my-node-app
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      # Optionally, push to Docker Hub or other registry
+      - name: Push Docker image to Docker Hub
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push my-node-app
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
