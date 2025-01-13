@@ -36,7 +36,8 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin docker.io
-         docker push my-node-app
+         docker tag my-node-app $DOCKER_USERNAME/nodeapp:latest  # Tag with your Docker Hub username
+         docker push $DOCKER_USERNAME/nodeapp:latest            # Push the image to your Docker Hub repository
         env:
          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
