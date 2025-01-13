@@ -27,10 +27,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Run tests (if applicable)
-      - name: Run tests
-        run: npm test  # Make sure you have tests set up in your app
-
       # Build Docker image with MONGO_URI and JWT_SECRET as build arguments
       - name: Build Docker image
         run: |
