@@ -32,10 +32,11 @@ jobs:
         run: |
           docker build --build-arg MONGO_URI=${{ secrets.MONGO_URI }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} -t my-node-app .
 
-      # Optionally, push to Docker Hub or other registry
+       # Push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
-           docker login -u $DOCKER_USERNAME --password-stdin docker push my-node-app
+         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin docker.io
+         docker push my-node-app
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
